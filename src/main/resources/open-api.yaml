@@ -1,0 +1,172 @@
+openapi: 3.0.2
+info:
+  title: Al hawamdeh engening project
+  description: "Al hawamdeh engening project"
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: abdayyad2012@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1-SNAPSHOT
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: items
+    description: operation about items
+
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: Create user functionality
+      operationId: createUser
+      parameters:
+        - name: admin_id
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: "add new user to db"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        500:
+          description: "system error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-codegen-request-body-name: body
+  /login:
+    post:
+      tags:
+        - user
+      summary: login
+      operationId: loginUser
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        500:
+          description: system error
+          content:
+            applicatio/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /serial:
+    get:
+      tags:
+        - items
+      summary: get all item serials
+      operationId: getSerial
+      responses:
+        200:
+          description: get all sreial objects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialResponse'
+  /item/{serial_id}:
+    get:
+      tags:
+        - items
+      summary: get items by serial
+      operationId: getItemBySerial
+      parameters:
+        - name: serial_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: get all items that belongs to serial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialResponse'
+  /sub_item/{item_id}:
+    get:
+      tags:
+        - items
+      summary: get items by serial
+      operationId: getSubItemByItem
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: get all sub items that belongs to item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialResponse'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Error:
+      type: object
+      properties:
+        msg:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          required:
+            - 'false'
+        status:
+          type: boolean
+    SerialResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SerialObject'
+    SerialObject:
+      type: object
+      properties:
+        code:
+          type: integer
+        description:
+          type: string
