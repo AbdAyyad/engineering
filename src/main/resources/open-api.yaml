@@ -136,11 +136,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SerialResponse'
+  /order:
+    post:
+      tags:
+        - items
+      summary: post order object to db
+      operationId: postOrder
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/OrderObject'
+      responses:
+        200:
+          description: get all sub items that belongs to item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderObject'
 components:
   schemas:
     User:
       type: object
       properties:
+        id:
+          type: integer
+          required:
+            - 'false'
         username:
           type: string
         password:
@@ -170,3 +192,22 @@ components:
           type: integer
         description:
           type: string
+    OrderObject:
+      type: object
+      properties:
+        subitem_id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        adress:
+          type: string
+          required:
+            - 'false'
+        notes:
+          type: string
+          required:
+            - 'false'

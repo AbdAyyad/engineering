@@ -36,9 +36,11 @@ public class Keys {
     public static final UniqueKey<EngOrderRecord> ENG_ORDER_PKEY = Internal.createUniqueKey(EngOrder.ENG_ORDER, DSL.name("eng_order_pkey"), new TableField[] { EngOrder.ENG_ORDER.ID }, true);
     public static final UniqueKey<EngUserRecord> ENG_USER_PKEY = Internal.createUniqueKey(EngUser.ENG_USER, DSL.name("eng_user_pkey"), new TableField[] { EngUser.ENG_USER.ID }, true);
     public static final UniqueKey<EngUserRecord> ENG_USER_USER_NAME_KEY = Internal.createUniqueKey(EngUser.ENG_USER, DSL.name("eng_user_user_name_key"), new TableField[] { EngUser.ENG_USER.USER_NAME }, true);
+    public static final UniqueKey<ItemRecord> ITEM_CODE_KEY = Internal.createUniqueKey(Item.ITEM, DSL.name("item_code_key"), new TableField[] { Item.ITEM.CODE }, true);
     public static final UniqueKey<ItemRecord> ITEM_PKEY = Internal.createUniqueKey(Item.ITEM, DSL.name("item_pkey"), new TableField[] { Item.ITEM.ID }, true);
     public static final UniqueKey<ItemSerialRecord> ITEM_SERIAL_CODE_KEY = Internal.createUniqueKey(ItemSerial.ITEM_SERIAL, DSL.name("item_serial_code_key"), new TableField[] { ItemSerial.ITEM_SERIAL.CODE }, true);
     public static final UniqueKey<ItemSerialRecord> ITEM_SERIAL_PKEY = Internal.createUniqueKey(ItemSerial.ITEM_SERIAL, DSL.name("item_serial_pkey"), new TableField[] { ItemSerial.ITEM_SERIAL.ID }, true);
+    public static final UniqueKey<SubItemRecord> SUB_ITEM_CODE_KEY = Internal.createUniqueKey(SubItem.SUB_ITEM, DSL.name("sub_item_code_key"), new TableField[] { SubItem.SUB_ITEM.CODE }, true);
     public static final UniqueKey<SubItemRecord> SUB_ITEM_PKEY = Internal.createUniqueKey(SubItem.SUB_ITEM, DSL.name("sub_item_pkey"), new TableField[] { SubItem.SUB_ITEM.ID }, true);
 
     // -------------------------------------------------------------------------

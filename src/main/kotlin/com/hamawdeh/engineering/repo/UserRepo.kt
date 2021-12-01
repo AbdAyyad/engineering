@@ -26,6 +26,13 @@ class UserRepo(private val dsl: DSLContext) {
         return toUser(result).first()
     }
 
+    fun addUser(user : User) {
+        dsl.insertInto(EngUser.ENG_USER)
+            .columns(EngUser.ENG_USER.USER_NAME,EngUser.ENG_USER.PASSWORD)
+            .values(user.username,user.password)
+            .execute()
+    }
+
     private fun toUser(result: Result<EngUserRecord>): List<User> {
         return result.map { User().password(it.password).username(it.userName) }
     }

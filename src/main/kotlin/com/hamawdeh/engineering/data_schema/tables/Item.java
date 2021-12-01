@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row4;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,6 +58,11 @@ public class Item extends TableImpl<ItemRecord> {
      * The column <code>public.item.serial_id</code>.
      */
     public final TableField<ItemRecord, Integer> SERIAL_ID = createField(DSL.name("serial_id"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.item.code</code>.
+     */
+    public final TableField<ItemRecord, String> CODE = createField(DSL.name("code"), SQLDataType.VARCHAR(4).nullable(false), this, "");
 
     /**
      * The column <code>public.item.description</code>.
@@ -118,6 +123,11 @@ public class Item extends TableImpl<ItemRecord> {
     }
 
     @Override
+    public List<UniqueKey<ItemRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.ITEM_CODE_KEY);
+    }
+
+    @Override
     public List<ForeignKey<ItemRecord, ?>> getReferences() {
         return Arrays.asList(Keys.ITEM__FK_SERIAL_ID);
     }
@@ -158,11 +168,11 @@ public class Item extends TableImpl<ItemRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row4 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<Integer, Integer, String, LocalDateTime> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row5<Integer, Integer, String, String, LocalDateTime> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }
