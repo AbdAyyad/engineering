@@ -11,9 +11,17 @@ import org.springframework.stereotype.Repository
 @Repository
 class UserRepo(private val dsl: DSLContext) {
 
+    fun findAll(): List<User> {
+        val records = dsl.selectFrom(EngUser.ENG_USER).fetch()
+        return toUser(records)
+    }
+
     fun findUserByUserName(userName: String): User {
         val result = dsl.selectFrom(EngUser.ENG_USER)
-            .where(EngUser.ENG_USER.USER_NAME.eq(userName))
+            .where(
+                EngUser.ENG_USER.USER_NAME.eq(userName)
+                    .and(EngUser.ENG_USER.ACTIVE.eq(true))
+            )
             .fetch()
         return toUser(result).first()
     }
@@ -22,18 +30,25 @@ class UserRepo(private val dsl: DSLContext) {
         val result = dsl.selectFrom(EngUser.ENG_USER)
             .where(EngUser.ENG_USER.ID.eq(id))
             .and(EngUser.ENG_USER.PRIVILEGE.eq(ADMIN.code))
+            .and(EngUser.ENG_USER.ACTIVE.eq(true))
             .fetch()
         return toUser(result).first()
     }
 
-    fun addUser(user : User) {
+    fun addUser(user: User) {
         dsl.insertInto(EngUser.ENG_USER)
-            .columns(EngUser.ENG_USER.USER_NAME,EngUser.ENG_USER.PASSWORD)
-            .values(user.username,user.password)
+            .columns(EngUser.ENG_USER.USER_NAME, EngUser.ENG_USER.PASSWORD)
+            .values(user.username, user.password)
             .execute()
     }
 
     private fun toUser(result: Result<EngUserRecord>): List<User> {
-        return result.map { User().password(it.password).username(it.userName) }
+        return result.map { User().password(it.password).username(it.userName).id(it.id) }
+    }
+
+    fun deactivateUserByName(name: String) {
+        dsl.update(EngUser.ENG_USER)
+            .set(EngUser.ENG_USER.ACTIVE, false)
+            .where(EngUser.ENG_USER.USER_NAME.eq(name))
     }
 }

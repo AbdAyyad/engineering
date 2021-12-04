@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -73,6 +73,11 @@ public class EngUser extends TableImpl<EngUserRecord> {
      * The column <code>public.eng_user.privilege</code>.
      */
     public final TableField<EngUserRecord, Integer> PRIVILEGE = createField(DSL.name("privilege"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("1", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.eng_user.active</code>.
+     */
+    public final TableField<EngUserRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
 
     private EngUser(Name alias, Table<EngUserRecord> aliased) {
         this(alias, aliased, null);
@@ -154,11 +159,11 @@ public class EngUser extends TableImpl<EngUserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, String, String, LocalDateTime, Integer> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Integer, String, String, LocalDateTime, Integer, Boolean> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

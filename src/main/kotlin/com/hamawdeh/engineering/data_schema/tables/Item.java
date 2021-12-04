@@ -55,19 +55,19 @@ public class Item extends TableImpl<ItemRecord> {
     public final TableField<ItemRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.item.serial_id</code>.
+     * The column <code>public.item.type_code</code>.
      */
-    public final TableField<ItemRecord, Integer> SERIAL_ID = createField(DSL.name("serial_id"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>public.item.code</code>.
-     */
-    public final TableField<ItemRecord, String> CODE = createField(DSL.name("code"), SQLDataType.VARCHAR(4).nullable(false), this, "");
+    public final TableField<ItemRecord, Integer> TYPE_CODE = createField(DSL.name("type_code"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.item.description</code>.
      */
     public final TableField<ItemRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>public.item.code</code>.
+     */
+    public final TableField<ItemRecord, Integer> CODE = createField(DSL.name("code"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.item.created</code>.
@@ -129,16 +129,16 @@ public class Item extends TableImpl<ItemRecord> {
 
     @Override
     public List<ForeignKey<ItemRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ITEM__FK_SERIAL_ID);
+        return Arrays.asList(Keys.ITEM__FK_TYPE_CODE);
     }
 
-    private transient ItemSerial _itemSerial;
+    private transient OrderType _orderType;
 
-    public ItemSerial itemSerial() {
-        if (_itemSerial == null)
-            _itemSerial = new ItemSerial(this, Keys.ITEM__FK_SERIAL_ID);
+    public OrderType orderType() {
+        if (_orderType == null)
+            _orderType = new OrderType(this, Keys.ITEM__FK_TYPE_CODE);
 
-        return _itemSerial;
+        return _orderType;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class Item extends TableImpl<ItemRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, Integer, String, String, LocalDateTime> fieldsRow() {
+    public Row5<Integer, Integer, String, Integer, LocalDateTime> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

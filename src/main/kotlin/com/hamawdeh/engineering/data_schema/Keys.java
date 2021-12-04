@@ -4,16 +4,16 @@
 package com.hamawdeh.engineering.data_schema;
 
 
+import com.hamawdeh.engineering.data_schema.tables.Category;
 import com.hamawdeh.engineering.data_schema.tables.EngOrder;
 import com.hamawdeh.engineering.data_schema.tables.EngUser;
 import com.hamawdeh.engineering.data_schema.tables.Item;
-import com.hamawdeh.engineering.data_schema.tables.ItemSerial;
-import com.hamawdeh.engineering.data_schema.tables.SubItem;
+import com.hamawdeh.engineering.data_schema.tables.OrderType;
+import com.hamawdeh.engineering.data_schema.tables.records.CategoryRecord;
 import com.hamawdeh.engineering.data_schema.tables.records.EngOrderRecord;
 import com.hamawdeh.engineering.data_schema.tables.records.EngUserRecord;
 import com.hamawdeh.engineering.data_schema.tables.records.ItemRecord;
-import com.hamawdeh.engineering.data_schema.tables.records.ItemSerialRecord;
-import com.hamawdeh.engineering.data_schema.tables.records.SubItemRecord;
+import com.hamawdeh.engineering.data_schema.tables.records.OrderTypeRecord;
 
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
@@ -33,21 +33,21 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<CategoryRecord> CATEGORY_CODE_KEY = Internal.createUniqueKey(Category.CATEGORY, DSL.name("category_code_key"), new TableField[] { Category.CATEGORY.CODE }, true);
+    public static final UniqueKey<CategoryRecord> CATEGORY_PKEY = Internal.createUniqueKey(Category.CATEGORY, DSL.name("category_pkey"), new TableField[] { Category.CATEGORY.ID }, true);
     public static final UniqueKey<EngOrderRecord> ENG_ORDER_PKEY = Internal.createUniqueKey(EngOrder.ENG_ORDER, DSL.name("eng_order_pkey"), new TableField[] { EngOrder.ENG_ORDER.ID }, true);
     public static final UniqueKey<EngUserRecord> ENG_USER_PKEY = Internal.createUniqueKey(EngUser.ENG_USER, DSL.name("eng_user_pkey"), new TableField[] { EngUser.ENG_USER.ID }, true);
     public static final UniqueKey<EngUserRecord> ENG_USER_USER_NAME_KEY = Internal.createUniqueKey(EngUser.ENG_USER, DSL.name("eng_user_user_name_key"), new TableField[] { EngUser.ENG_USER.USER_NAME }, true);
     public static final UniqueKey<ItemRecord> ITEM_CODE_KEY = Internal.createUniqueKey(Item.ITEM, DSL.name("item_code_key"), new TableField[] { Item.ITEM.CODE }, true);
     public static final UniqueKey<ItemRecord> ITEM_PKEY = Internal.createUniqueKey(Item.ITEM, DSL.name("item_pkey"), new TableField[] { Item.ITEM.ID }, true);
-    public static final UniqueKey<ItemSerialRecord> ITEM_SERIAL_CODE_KEY = Internal.createUniqueKey(ItemSerial.ITEM_SERIAL, DSL.name("item_serial_code_key"), new TableField[] { ItemSerial.ITEM_SERIAL.CODE }, true);
-    public static final UniqueKey<ItemSerialRecord> ITEM_SERIAL_PKEY = Internal.createUniqueKey(ItemSerial.ITEM_SERIAL, DSL.name("item_serial_pkey"), new TableField[] { ItemSerial.ITEM_SERIAL.ID }, true);
-    public static final UniqueKey<SubItemRecord> SUB_ITEM_CODE_KEY = Internal.createUniqueKey(SubItem.SUB_ITEM, DSL.name("sub_item_code_key"), new TableField[] { SubItem.SUB_ITEM.CODE }, true);
-    public static final UniqueKey<SubItemRecord> SUB_ITEM_PKEY = Internal.createUniqueKey(SubItem.SUB_ITEM, DSL.name("sub_item_pkey"), new TableField[] { SubItem.SUB_ITEM.ID }, true);
+    public static final UniqueKey<OrderTypeRecord> ORDER_TYPE_CODE_KEY = Internal.createUniqueKey(OrderType.ORDER_TYPE, DSL.name("order_type_code_key"), new TableField[] { OrderType.ORDER_TYPE.CODE }, true);
+    public static final UniqueKey<OrderTypeRecord> ORDER_TYPE_PKEY = Internal.createUniqueKey(OrderType.ORDER_TYPE, DSL.name("order_type_pkey"), new TableField[] { OrderType.ORDER_TYPE.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<EngOrderRecord, SubItemRecord> ENG_ORDER__FK_SUB_ITEM_ID = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_sub_item_id"), new TableField[] { EngOrder.ENG_ORDER.SUB_ITEM_ID }, Keys.SUB_ITEM_PKEY, new TableField[] { SubItem.SUB_ITEM.ID }, true);
-    public static final ForeignKey<ItemRecord, ItemSerialRecord> ITEM__FK_SERIAL_ID = Internal.createForeignKey(Item.ITEM, DSL.name("fk_serial_id"), new TableField[] { Item.ITEM.SERIAL_ID }, Keys.ITEM_SERIAL_PKEY, new TableField[] { ItemSerial.ITEM_SERIAL.ID }, true);
-    public static final ForeignKey<SubItemRecord, ItemRecord> SUB_ITEM__FK_ITEM_ID = Internal.createForeignKey(SubItem.SUB_ITEM, DSL.name("fk_item_id"), new TableField[] { SubItem.SUB_ITEM.ITEM_ID }, Keys.ITEM_PKEY, new TableField[] { Item.ITEM.ID }, true);
+    public static final ForeignKey<EngOrderRecord, CategoryRecord> ENG_ORDER__FK_CATEGORY_CODE = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_category_code"), new TableField[] { EngOrder.ENG_ORDER.CATEGORY_CODE }, Keys.CATEGORY_CODE_KEY, new TableField[] { Category.CATEGORY.CODE }, true);
+    public static final ForeignKey<EngOrderRecord, ItemRecord> ENG_ORDER__FK_ITEM_CODE = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_item_code"), new TableField[] { EngOrder.ENG_ORDER.ITEM_CODE }, Keys.ITEM_CODE_KEY, new TableField[] { Item.ITEM.CODE }, true);
+    public static final ForeignKey<ItemRecord, OrderTypeRecord> ITEM__FK_TYPE_CODE = Internal.createForeignKey(Item.ITEM, DSL.name("fk_type_code"), new TableField[] { Item.ITEM.TYPE_CODE }, Keys.ORDER_TYPE_CODE_KEY, new TableField[] { OrderType.ORDER_TYPE.CODE }, true);
 }

@@ -61,6 +61,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       x-codegen-request-body-name: body
+
+    get:
+      summary: get all users
+      tags:
+        - user
+      operationId: getUsers
+      responses:
+        200:
+          description: operation sucessfull
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /user/{name}:
+    delete:
+      tags:
+        - user
+      description: delete user by name
+      operationId: deleteUserByName
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: delete sucussfully
   /login:
     post:
       tags:
@@ -85,57 +116,51 @@ paths:
             applicatio/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /serial:
+  /category:
     get:
       tags:
         - items
-      summary: get all item serials
-      operationId: getSerial
+      summary: get all categories
+      operationId: getCategory
       responses:
         200:
-          description: get all sreial objects
+          description: get all category objects
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SerialResponse'
-  /item/{serial_id}:
+                $ref: '#/components/schemas/CategoryResponse'
+  /type:
     get:
       tags:
         - items
-      summary: get items by serial
-      operationId: getItemBySerial
+      summary: get items type
+      operationId: getTypes
+      responses:
+        200:
+          description: get all items types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+  /item/{type_code}:
+    get:
+      tags:
+        - items
+      summary: get items by type code
+      operationId: getItemByCode
       parameters:
-        - name: serial_id
+        - name: type_code
           in: path
           required: true
           schema:
             type: integer
       responses:
         200:
-          description: get all items that belongs to serial
+          description: get all items that belongs to type
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SerialResponse'
-  /sub_item/{item_id}:
-    get:
-      tags:
-        - items
-      summary: get items by serial
-      operationId: getSubItemByItem
-      parameters:
-        - name: item_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: get all sub items that belongs to item
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SerialResponse'
+                $ref: '#/components/schemas/CategoryResponse'
   /order:
     post:
       tags:
@@ -149,11 +174,50 @@ paths:
               $ref: '#/components/schemas/OrderObject'
       responses:
         200:
-          description: get all sub items that belongs to item
+          description: return same object
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderObject'
+    get:
+      tags:
+        - items
+      summary: get orders
+      operationId: getOrders
+      parameters:
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: get list of order objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderResponse'
+  /order/csv:
+    get:
+      tags:
+        - items
+      summary: get orders csv
+      operationId: getOrdersCsv
+      parameters:
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: get list of order objects
+          content:
+            text/csv:
+              schema:
+                type: string
 components:
   schemas:
     User:
@@ -181,7 +245,7 @@ components:
             - 'false'
         status:
           type: boolean
-    SerialResponse:
+    CategoryResponse:
       type: array
       items:
         $ref: '#/components/schemas/SerialObject'
@@ -195,7 +259,9 @@ components:
     OrderObject:
       type: object
       properties:
-        subitem_id:
+        item_code:
+          type: integer
+        category_code:
           type: integer
         name:
           type: string
@@ -211,3 +277,20 @@ components:
           type: string
           required:
             - 'false'
+    OrderResponse:
+      type: object
+      properties:
+        serial:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        notes:
+          type: string
+          required:
+            - 'false'
+        type:
+          type: string

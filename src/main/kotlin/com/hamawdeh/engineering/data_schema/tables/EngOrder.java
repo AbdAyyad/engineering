@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -55,9 +55,14 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
     public final TableField<EngOrderRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.eng_order.sub_item_id</code>.
+     * The column <code>public.eng_order.item_code</code>.
      */
-    public final TableField<EngOrderRecord, Integer> SUB_ITEM_ID = createField(DSL.name("sub_item_id"), SQLDataType.INTEGER, this, "");
+    public final TableField<EngOrderRecord, Integer> ITEM_CODE = createField(DSL.name("item_code"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.eng_order.category_code</code>.
+     */
+    public final TableField<EngOrderRecord, Integer> CATEGORY_CODE = createField(DSL.name("category_code"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.eng_order.name</code>.
@@ -139,16 +144,24 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
 
     @Override
     public List<ForeignKey<EngOrderRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ENG_ORDER__FK_SUB_ITEM_ID);
+        return Arrays.asList(Keys.ENG_ORDER__FK_ITEM_CODE, Keys.ENG_ORDER__FK_CATEGORY_CODE);
     }
 
-    private transient SubItem _subItem;
+    private transient Item _item;
+    private transient Category _category;
 
-    public SubItem subItem() {
-        if (_subItem == null)
-            _subItem = new SubItem(this, Keys.ENG_ORDER__FK_SUB_ITEM_ID);
+    public Item item() {
+        if (_item == null)
+            _item = new Item(this, Keys.ENG_ORDER__FK_ITEM_CODE);
 
-        return _subItem;
+        return _item;
+    }
+
+    public Category category() {
+        if (_category == null)
+            _category = new Category(this, Keys.ENG_ORDER__FK_CATEGORY_CODE);
+
+        return _category;
     }
 
     @Override
@@ -178,11 +191,11 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, Integer, String, String, String, String, String, LocalDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Integer, Integer, Integer, String, String, String, String, String, LocalDateTime> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

@@ -4,11 +4,11 @@
 package com.hamawdeh.engineering.data_schema;
 
 
+import com.hamawdeh.engineering.data_schema.tables.Category;
 import com.hamawdeh.engineering.data_schema.tables.EngOrder;
 import com.hamawdeh.engineering.data_schema.tables.EngUser;
 import com.hamawdeh.engineering.data_schema.tables.Item;
-import com.hamawdeh.engineering.data_schema.tables.ItemSerial;
-import com.hamawdeh.engineering.data_schema.tables.SubItem;
+import com.hamawdeh.engineering.data_schema.tables.OrderType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +32,11 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
+     * The table <code>public.category</code>.
+     */
+    public final Category CATEGORY = Category.CATEGORY;
+
+    /**
      * The table <code>public.eng_order</code>.
      */
     public final EngOrder ENG_ORDER = EngOrder.ENG_ORDER;
@@ -47,14 +52,9 @@ public class Public extends SchemaImpl {
     public final Item ITEM = Item.ITEM;
 
     /**
-     * The table <code>public.item_serial</code>.
+     * The table <code>public.order_type</code>.
      */
-    public final ItemSerial ITEM_SERIAL = ItemSerial.ITEM_SERIAL;
-
-    /**
-     * The table <code>public.sub_item</code>.
-     */
-    public final SubItem SUB_ITEM = SubItem.SUB_ITEM;
+    public final OrderType ORDER_TYPE = OrderType.ORDER_TYPE;
 
     /**
      * No further instances allowed
@@ -72,11 +72,11 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Category.CATEGORY,
             EngOrder.ENG_ORDER,
             EngUser.ENG_USER,
             Item.ITEM,
-            ItemSerial.ITEM_SERIAL,
-            SubItem.SUB_ITEM
+            OrderType.ORDER_TYPE
         );
     }
 }

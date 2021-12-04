@@ -4,11 +4,11 @@
 package com.hamawdeh.engineering.data_schema;
 
 
+import com.hamawdeh.engineering.data_schema.tables.Category;
 import com.hamawdeh.engineering.data_schema.tables.EngOrder;
 import com.hamawdeh.engineering.data_schema.tables.EngUser;
 import com.hamawdeh.engineering.data_schema.tables.Item;
-import com.hamawdeh.engineering.data_schema.tables.ItemSerial;
-import com.hamawdeh.engineering.data_schema.tables.SubItem;
+import com.hamawdeh.engineering.data_schema.tables.OrderType;
 
 
 /**
@@ -16,6 +16,11 @@ import com.hamawdeh.engineering.data_schema.tables.SubItem;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>public.category</code>.
+     */
+    public static final Category CATEGORY = Category.CATEGORY;
 
     /**
      * The table <code>public.eng_order</code>.
@@ -33,12 +38,7 @@ public class Tables {
     public static final Item ITEM = Item.ITEM;
 
     /**
-     * The table <code>public.item_serial</code>.
+     * The table <code>public.order_type</code>.
      */
-    public static final ItemSerial ITEM_SERIAL = ItemSerial.ITEM_SERIAL;
-
-    /**
-     * The table <code>public.sub_item</code>.
-     */
-    public static final SubItem SUB_ITEM = SubItem.SUB_ITEM;
+    public static final OrderType ORDER_TYPE = OrderType.ORDER_TYPE;
 }
