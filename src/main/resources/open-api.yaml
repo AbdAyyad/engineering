@@ -99,6 +99,7 @@ paths:
       summary: login
       operationId: loginUser
       requestBody:
+        required: true
         content:
           '*/*':
             schema:
@@ -168,6 +169,7 @@ paths:
       summary: post order object to db
       operationId: postOrder
       requestBody:
+        required: true
         content:
           '*/*':
             schema:
@@ -229,8 +231,12 @@ components:
             - 'false'
         username:
           type: string
+          required:
+            - 'true'
         password:
           type: string
+          required:
+            - 'true'
     Error:
       type: object
       properties:
@@ -245,6 +251,8 @@ components:
             - 'false'
         status:
           type: boolean
+        name:
+          type: string
     CategoryResponse:
       type: array
       items:

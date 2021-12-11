@@ -21,7 +21,12 @@ class ItemRepo(private val dsl: DSLContext) {
     }
 
     private fun mapCategory(result: Result<CategoryRecord>): List<SerialObject> {
-        return result.map { SerialObject().code(it.code).description(it.name) }
+        return result.map {
+            SerialObject(
+                code = it.code,
+                description = it.name
+            )
+        }
     }
 
     fun findOrderType(): List<SerialObject> {
@@ -30,7 +35,12 @@ class ItemRepo(private val dsl: DSLContext) {
     }
 
     private fun mapOrderType(result: Result<OrderTypeRecord>): List<SerialObject> {
-        return result.map { SerialObject().code(it.code.toInt()).description(it.description) }
+        return result.map {
+            SerialObject(
+                code = it.code,
+                description = it.description
+            )
+        }
     }
 
     fun findItemByOrderType(OrderTypeCode: Int): List<SerialObject> {
@@ -41,7 +51,12 @@ class ItemRepo(private val dsl: DSLContext) {
     }
 
     private fun mapItem(result: Result<ItemRecord>): List<SerialObject> {
-        return result.map { SerialObject().code(it.code).description(it.description) }
+        return result.map {
+            SerialObject(
+                code = it.code,
+                description = it.description
+            )
+        }
     }
 
     fun addOrder(order: OrderObject) {
@@ -91,13 +106,14 @@ class ItemRepo(private val dsl: DSLContext) {
                 .fetchInto(OrderType.ORDER_TYPE)
                 .first()
 
-            OrderResponse()
-                .name(it.name)
-                .notes(it.notes)
-                .phone(it.phone)
-                .role(it.role)
-                .serial("${it.categoryCode}-${record.code}-${it.itemCode}")
-                .type(record.description)
+            OrderResponse(
+                name = it.name,
+                notes = it.notes,
+                phone = it.phone,
+                role = it.role,
+                serial = "${it.categoryCode}-${record.code}-${it.itemCode}",
+                type = record.description
+            )
         }
     }
 

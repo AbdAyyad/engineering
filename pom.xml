@@ -122,6 +122,19 @@
                         <plugin>spring</plugin>
                     </compilerPlugins>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>${project.build.directory}/generated-sources/kotlin/src/main/kotlin</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
@@ -180,15 +193,17 @@
                             <inputSpec>
                                 ${project.basedir}/src/main/resources/open-api.yaml
                             </inputSpec>
-                            <generatorName>spring</generatorName>
+                            <generatorName>kotlin-spring</generatorName>
                             <apiPackage>com.hamawdeh.engineering.controller</apiPackage>
                             <modelPackage>com.hamawdeh.engineering.model</modelPackage>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
                             <configOptions>
-                                <delegatePattern>true</delegatePattern>
+                                <delegatePattern>false</delegatePattern>
                                 <useTags>true</useTags>
+                                <interfaceOnly>true</interfaceOnly>
+                                <asyncNative>true</asyncNative>
                             </configOptions>
                         </configuration>
                     </execution>

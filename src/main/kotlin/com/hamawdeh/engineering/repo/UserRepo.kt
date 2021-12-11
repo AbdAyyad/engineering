@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository
 class UserRepo(private val dsl: DSLContext) {
 
     fun findAll(): List<User> {
-        val records = dsl.selectFrom(EngUser.ENG_USER).fetch()
+        val records = dsl.selectFrom(EngUser.ENG_USER)
+            .where(EngUser.ENG_USER.ACTIVE.eq(true))
+            .fetch()
         return toUser(records)
     }
 
@@ -43,12 +45,19 @@ class UserRepo(private val dsl: DSLContext) {
     }
 
     private fun toUser(result: Result<EngUserRecord>): List<User> {
-        return result.map { User().password(it.password).username(it.userName).id(it.id) }
+        return result.map {
+            User(
+                password = it.password,
+                username = it.userName,
+                id = it.id
+            )
+        }
     }
 
     fun deactivateUserByName(name: String) {
         dsl.update(EngUser.ENG_USER)
             .set(EngUser.ENG_USER.ACTIVE, false)
             .where(EngUser.ENG_USER.USER_NAME.eq(name))
+            .execute()
     }
 }

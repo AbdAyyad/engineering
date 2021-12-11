@@ -1,6 +1,6 @@
 package com.hamawdeh.engineering.controllers
 
-import com.hamawdeh.engineering.controller.UserApiDelegate
+import com.hamawdeh.engineering.controller.UserApi
 import com.hamawdeh.engineering.model.LoginResponse
 import com.hamawdeh.engineering.model.User
 import com.hamawdeh.engineering.repo.UserRepo
@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class UserController(private val userRepo: UserRepo) : UserApiDelegate {
+class UserController(private val userRepo: UserRepo) : UserApi {
     val logger: Logger = LoggerFactory.getLogger(UserController::class.java)
 
     override fun createUser(adminId: Int, body: User): ResponseEntity<User> {
@@ -22,11 +22,17 @@ class UserController(private val userRepo: UserRepo) : UserApiDelegate {
 
     override fun loginUser(user: User): ResponseEntity<LoginResponse> {
         logger.info(user.username)
-        val userFromDb = userRepo.findUserByUserName(user.username)
-        return ResponseEntity.ok(LoginResponse().status(userFromDb.password == user.password).id(userFromDb.id))
+        val userFromDb = userRepo.findUserByUserName(user.username!!)
+        return ResponseEntity.ok(
+            LoginResponse(
+                status = userFromDb.password == user.password,
+                id = userFromDb.id,
+                name = user.username
+            )
+        )
     }
 
-    override fun deleteUserByName(name: String): ResponseEntity<Void> {
+    override fun deleteUserByName(name: String): ResponseEntity<Unit> {
         userRepo.deactivateUserByName(name)
         return ResponseEntity(HttpStatus.OK)
     }

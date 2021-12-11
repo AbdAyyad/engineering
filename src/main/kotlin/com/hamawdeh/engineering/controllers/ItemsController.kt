@@ -3,7 +3,7 @@ package com.hamawdeh.engineering.controllers
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
-import com.hamawdeh.engineering.controller.ItemsApiDelegate
+import com.hamawdeh.engineering.controller.ItemsApi
 import com.hamawdeh.engineering.model.OrderObject
 import com.hamawdeh.engineering.model.OrderResponse
 import com.hamawdeh.engineering.model.SerialObject
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.io.StringWriter
 
 @RestController
-class ItemsController(private val itemRepo: ItemRepo) : ItemsApiDelegate {
+class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
 
     override fun postOrder(orderObject: OrderObject): ResponseEntity<OrderObject> {
         itemRepo.addOrder(orderObject)
@@ -23,7 +23,7 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApiDelegate {
     }
 
     override fun getCategory(): ResponseEntity<List<SerialObject>> {
-        return ResponseEntity.ok(itemRepo.findOrderType())
+        return ResponseEntity.ok(itemRepo.findCategory())
     }
 
     override fun getItemByCode(typeCode: Int): ResponseEntity<List<SerialObject>> {
@@ -51,9 +51,11 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApiDelegate {
         val csvMapper = CsvMapper()
         csvMapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
 
-        stringWriter.write(csvMapper
-            .writer(csvSchemaBuilder.build().withHeader())
-            .writeValueAsString(null))
+        stringWriter.write(
+            csvMapper
+                .writer(csvSchemaBuilder.build().withHeader())
+                .writeValueAsString(null)
+        )
 
         orders.map {
             csvMapper
