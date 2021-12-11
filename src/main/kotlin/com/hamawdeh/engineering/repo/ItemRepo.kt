@@ -117,4 +117,41 @@ class ItemRepo(private val dsl: DSLContext) {
         }
     }
 
+    fun addCategory(serialObject: SerialObject) {
+        dsl.insertInto(Category.CATEGORY)
+            .columns(
+                Category.CATEGORY.CODE,
+                Category.CATEGORY.NAME
+            ).values(
+                serialObject.code,
+                serialObject.description
+            )
+            .execute()
+    }
+
+    fun addItem(serialObject: SerialObject) {
+        dsl.insertInto(OrderType.ORDER_TYPE)
+            .columns(
+                OrderType.ORDER_TYPE.CODE,
+                OrderType.ORDER_TYPE.DESCRIPTION
+            ).values(
+                serialObject.code,
+                serialObject.description
+            )
+            .execute()
+    }
+
+    fun addSubItem(itemCode: Int, serialObject: SerialObject) {
+        dsl.insertInto(Item.ITEM)
+            .columns(
+                Item.ITEM.CODE,
+                Item.ITEM.DESCRIPTION,
+                Item.ITEM.TYPE_CODE
+            ).values(
+                serialObject.code,
+                serialObject.description,
+                itemCode
+            )
+            .execute()
+    }
 }

@@ -73,4 +73,19 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
     override fun getTypes(): ResponseEntity<List<SerialObject>> {
         return ResponseEntity.ok(itemRepo.findOrderType())
     }
+
+    override fun addCategory(serialObject: SerialObject): ResponseEntity<SerialObject> {
+        itemRepo.addCategory(serialObject)
+        return ResponseEntity.ok(serialObject)
+    }
+
+    override fun addSubType(typeCode: Int, serialObject: SerialObject): ResponseEntity<SerialObject> {
+        itemRepo.addSubItem(typeCode,serialObject)
+        return ResponseEntity.ok(serialObject)
+    }
+
+    override fun addType(serialObject: SerialObject): ResponseEntity<SerialObject> {
+        itemRepo.addItem(serialObject)
+        return ResponseEntity.ok(serialObject)
+    }
 }

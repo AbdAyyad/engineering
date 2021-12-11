@@ -130,6 +130,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryResponse'
+    post:
+      tags:
+        - items
+      operationId: addCategory
+      summary: add new category
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: operation done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
   /type:
     get:
       tags:
@@ -143,6 +161,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryResponse'
+    post:
+      tags:
+        - items
+      operationId: addType
+      summary: add new type
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: operation done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
   /item/{type_code}:
     get:
       tags:
@@ -162,6 +198,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryResponse'
+    post:
+      tags:
+        - items
+      operationId: addSubType
+      summary: add new subType
+      parameters:
+        - name: type_code
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: operation done
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
   /order:
     post:
       tags:
