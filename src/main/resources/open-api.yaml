@@ -148,6 +148,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SerialObject'
+
+  /category/{code}:
+    patch:
+      tags:
+        - items
+      summary: category by code
+      description: update category by code
+      operationId: patchCategory
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: update sub type by prev code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
+
   /type:
     get:
       tags:
@@ -179,6 +206,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SerialObject'
+
+  /type/{code}:
+    patch:
+      tags:
+        - items
+      summary: update type by code
+      description: update type by code
+      operationId: patchType
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: update sub type by prev code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
+
   /item/{type_code}:
     get:
       tags:
@@ -198,6 +252,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryResponse'
+    patch:
+      tags:
+        - items
+      summary: update sub type by code
+      description: update sub type by code
+      operationId: patchSubType
+      parameters:
+        - name: type_code
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SerialObject'
+      responses:
+        200:
+          description: update sub type by prev code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialObject'
     post:
       tags:
         - items
@@ -241,6 +319,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderObject'
+
+    patch:
+      tags:
+        - items
+      summary: update order object to db
+      operationId: patchOrder
+      requestBody:
+        required: true
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UpdateOrderRequest'
+      responses:
+        200:
+          description: return same object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+
     get:
       tags:
         - items
@@ -324,6 +422,7 @@ components:
           type: integer
         description:
           type: string
+
     OrderObject:
       type: object
       properties:
@@ -345,9 +444,33 @@ components:
           type: string
           required:
             - 'false'
+
+    UpdateOrderRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        adress:
+          type: string
+        notes:
+          type: string
+      required:
+        - id
+        - name
+        - role
+        - phone
+
     OrderResponse:
       type: object
       properties:
+        id:
+          type: integer
         serial:
           type: string
         name:

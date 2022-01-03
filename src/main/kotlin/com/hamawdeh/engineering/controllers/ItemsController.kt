@@ -7,6 +7,7 @@ import com.hamawdeh.engineering.controller.ItemsApi
 import com.hamawdeh.engineering.model.OrderObject
 import com.hamawdeh.engineering.model.OrderResponse
 import com.hamawdeh.engineering.model.SerialObject
+import com.hamawdeh.engineering.model.UpdateOrderRequest
 import com.hamawdeh.engineering.repo.ItemRepo
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -31,11 +32,11 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
     }
 
     override fun getOrders(type: Int?): ResponseEntity<List<OrderResponse>> {
-        return ResponseEntity.ok(itemRepo.findOrder(type))
+        return ResponseEntity.ok(itemRepo.findOrderByTypeCode(type))
     }
 
     override fun getOrdersCsv(type: Int?): ResponseEntity<String> {
-        val orders = itemRepo.findOrder(type)
+        val orders = itemRepo.findOrderByTypeCode(type)
 
         val csvSchemaBuilder = CsvSchema.builder()
         csvSchemaBuilder
@@ -80,12 +81,28 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
     }
 
     override fun addSubType(typeCode: Int, serialObject: SerialObject): ResponseEntity<SerialObject> {
-        itemRepo.addSubItem(typeCode,serialObject)
+        itemRepo.addSubItem(typeCode, serialObject)
         return ResponseEntity.ok(serialObject)
     }
 
     override fun addType(serialObject: SerialObject): ResponseEntity<SerialObject> {
         itemRepo.addItem(serialObject)
         return ResponseEntity.ok(serialObject)
+    }
+
+    override fun patchCategory(code: Int, serialObject: SerialObject?): ResponseEntity<SerialObject> {
+        return ResponseEntity.ok(itemRepo.updateCategoryByCode(code, serialObject!!))
+    }
+
+    override fun patchSubType(typeCode: Int, serialObject: SerialObject?): ResponseEntity<SerialObject> {
+        return ResponseEntity.ok(itemRepo.updateItemByCode(typeCode, serialObject!!))
+    }
+
+    override fun patchType(code: Int, serialObject: SerialObject?): ResponseEntity<SerialObject> {
+        return ResponseEntity.ok(itemRepo.updateTypeByCode(code, serialObject!!))
+    }
+
+    override fun patchOrder(updateOrderRequest: UpdateOrderRequest): ResponseEntity<OrderResponse> {
+        return ResponseEntity.ok(itemRepo.updateOrder(updateOrderRequest))
     }
 }

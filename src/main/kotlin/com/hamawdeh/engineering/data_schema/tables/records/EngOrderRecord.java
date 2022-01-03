@@ -38,30 +38,30 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
     }
 
     /**
-     * Setter for <code>public.eng_order.item_code</code>.
+     * Setter for <code>public.eng_order.item_id</code>.
      */
-    public void setItemCode(Integer value) {
+    public void setItemId(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.eng_order.item_code</code>.
+     * Getter for <code>public.eng_order.item_id</code>.
      */
-    public Integer getItemCode() {
+    public Integer getItemId() {
         return (Integer) get(1);
     }
 
     /**
-     * Setter for <code>public.eng_order.category_code</code>.
+     * Setter for <code>public.eng_order.category_id</code>.
      */
-    public void setCategoryCode(Integer value) {
+    public void setCategoryId(Integer value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>public.eng_order.category_code</code>.
+     * Getter for <code>public.eng_order.category_id</code>.
      */
-    public Integer getCategoryCode() {
+    public Integer getCategoryId() {
         return (Integer) get(2);
     }
 
@@ -179,12 +179,12 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
 
     @Override
     public Field<Integer> field2() {
-        return EngOrder.ENG_ORDER.ITEM_CODE;
+        return EngOrder.ENG_ORDER.ITEM_ID;
     }
 
     @Override
     public Field<Integer> field3() {
-        return EngOrder.ENG_ORDER.CATEGORY_CODE;
+        return EngOrder.ENG_ORDER.CATEGORY_ID;
     }
 
     @Override
@@ -224,12 +224,12 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
 
     @Override
     public Integer component2() {
-        return getItemCode();
+        return getItemId();
     }
 
     @Override
     public Integer component3() {
-        return getCategoryCode();
+        return getCategoryId();
     }
 
     @Override
@@ -269,12 +269,12 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
 
     @Override
     public Integer value2() {
-        return getItemCode();
+        return getItemId();
     }
 
     @Override
     public Integer value3() {
-        return getCategoryCode();
+        return getCategoryId();
     }
 
     @Override
@@ -315,13 +315,13 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
 
     @Override
     public EngOrderRecord value2(Integer value) {
-        setItemCode(value);
+        setItemId(value);
         return this;
     }
 
     @Override
     public EngOrderRecord value3(Integer value) {
-        setCategoryCode(value);
+        setCategoryId(value);
         return this;
     }
 
@@ -389,12 +389,12 @@ public class EngOrderRecord extends UpdatableRecordImpl<EngOrderRecord> implemen
     /**
      * Create a detached, initialised EngOrderRecord
      */
-    public EngOrderRecord(Integer id, Integer itemCode, Integer categoryCode, String name, String role, String phone, String address, String notes, LocalDateTime created) {
+    public EngOrderRecord(Integer id, Integer itemId, Integer categoryId, String name, String role, String phone, String address, String notes, LocalDateTime created) {
         super(EngOrder.ENG_ORDER);
 
         setId(id);
-        setItemCode(itemCode);
-        setCategoryCode(categoryCode);
+        setItemId(itemId);
+        setCategoryId(categoryId);
         setName(name);
         setRole(role);
         setPhone(phone);

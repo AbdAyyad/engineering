@@ -38,16 +38,16 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
     }
 
     /**
-     * Setter for <code>public.item.type_code</code>.
+     * Setter for <code>public.item.type_id</code>.
      */
-    public void setTypeCode(Integer value) {
+    public void setTypeId(Integer value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>public.item.type_code</code>.
+     * Getter for <code>public.item.type_id</code>.
      */
-    public Integer getTypeCode() {
+    public Integer getTypeId() {
         return (Integer) get(1);
     }
 
@@ -123,7 +123,7 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
 
     @Override
     public Field<Integer> field2() {
-        return Item.ITEM.TYPE_CODE;
+        return Item.ITEM.TYPE_ID;
     }
 
     @Override
@@ -148,7 +148,7 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
 
     @Override
     public Integer component2() {
-        return getTypeCode();
+        return getTypeId();
     }
 
     @Override
@@ -173,7 +173,7 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
 
     @Override
     public Integer value2() {
-        return getTypeCode();
+        return getTypeId();
     }
 
     @Override
@@ -199,7 +199,7 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
 
     @Override
     public ItemRecord value2(Integer value) {
-        setTypeCode(value);
+        setTypeId(value);
         return this;
     }
 
@@ -245,11 +245,11 @@ public class ItemRecord extends UpdatableRecordImpl<ItemRecord> implements Recor
     /**
      * Create a detached, initialised ItemRecord
      */
-    public ItemRecord(Integer id, Integer typeCode, String description, Integer code, LocalDateTime created) {
+    public ItemRecord(Integer id, Integer typeId, String description, Integer code, LocalDateTime created) {
         super(Item.ITEM);
 
         setId(id);
-        setTypeCode(typeCode);
+        setTypeId(typeId);
         setDescription(description);
         setCode(code);
         setCreated(created);

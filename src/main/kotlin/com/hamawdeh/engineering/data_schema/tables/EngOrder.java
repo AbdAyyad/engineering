@@ -55,14 +55,14 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
     public final TableField<EngOrderRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.eng_order.item_code</code>.
+     * The column <code>public.eng_order.item_id</code>.
      */
-    public final TableField<EngOrderRecord, Integer> ITEM_CODE = createField(DSL.name("item_code"), SQLDataType.INTEGER, this, "");
+    public final TableField<EngOrderRecord, Integer> ITEM_ID = createField(DSL.name("item_id"), SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>public.eng_order.category_code</code>.
+     * The column <code>public.eng_order.category_id</code>.
      */
-    public final TableField<EngOrderRecord, Integer> CATEGORY_CODE = createField(DSL.name("category_code"), SQLDataType.INTEGER, this, "");
+    public final TableField<EngOrderRecord, Integer> CATEGORY_ID = createField(DSL.name("category_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.eng_order.name</code>.
@@ -144,7 +144,7 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
 
     @Override
     public List<ForeignKey<EngOrderRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ENG_ORDER__FK_ITEM_CODE, Keys.ENG_ORDER__FK_CATEGORY_CODE);
+        return Arrays.asList(Keys.ENG_ORDER__FK_ITEM_ID, Keys.ENG_ORDER__FK_CATEGORY_ID);
     }
 
     private transient Item _item;
@@ -152,14 +152,14 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
 
     public Item item() {
         if (_item == null)
-            _item = new Item(this, Keys.ENG_ORDER__FK_ITEM_CODE);
+            _item = new Item(this, Keys.ENG_ORDER__FK_ITEM_ID);
 
         return _item;
     }
 
     public Category category() {
         if (_category == null)
-            _category = new Category(this, Keys.ENG_ORDER__FK_CATEGORY_CODE);
+            _category = new Category(this, Keys.ENG_ORDER__FK_CATEGORY_ID);
 
         return _category;
     }

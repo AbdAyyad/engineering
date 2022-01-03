@@ -55,9 +55,9 @@ public class Item extends TableImpl<ItemRecord> {
     public final TableField<ItemRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.item.type_code</code>.
+     * The column <code>public.item.type_id</code>.
      */
-    public final TableField<ItemRecord, Integer> TYPE_CODE = createField(DSL.name("type_code"), SQLDataType.INTEGER, this, "");
+    public final TableField<ItemRecord, Integer> TYPE_ID = createField(DSL.name("type_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.item.description</code>.
@@ -129,14 +129,14 @@ public class Item extends TableImpl<ItemRecord> {
 
     @Override
     public List<ForeignKey<ItemRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ITEM__FK_TYPE_CODE);
+        return Arrays.asList(Keys.ITEM__FK_TYPE_ID);
     }
 
     private transient OrderType _orderType;
 
     public OrderType orderType() {
         if (_orderType == null)
-            _orderType = new OrderType(this, Keys.ITEM__FK_TYPE_CODE);
+            _orderType = new OrderType(this, Keys.ITEM__FK_TYPE_ID);
 
         return _orderType;
     }

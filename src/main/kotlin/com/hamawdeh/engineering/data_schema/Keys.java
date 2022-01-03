@@ -47,7 +47,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<EngOrderRecord, CategoryRecord> ENG_ORDER__FK_CATEGORY_CODE = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_category_code"), new TableField[] { EngOrder.ENG_ORDER.CATEGORY_CODE }, Keys.CATEGORY_CODE_KEY, new TableField[] { Category.CATEGORY.CODE }, true);
-    public static final ForeignKey<EngOrderRecord, ItemRecord> ENG_ORDER__FK_ITEM_CODE = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_item_code"), new TableField[] { EngOrder.ENG_ORDER.ITEM_CODE }, Keys.ITEM_CODE_KEY, new TableField[] { Item.ITEM.CODE }, true);
-    public static final ForeignKey<ItemRecord, OrderTypeRecord> ITEM__FK_TYPE_CODE = Internal.createForeignKey(Item.ITEM, DSL.name("fk_type_code"), new TableField[] { Item.ITEM.TYPE_CODE }, Keys.ORDER_TYPE_CODE_KEY, new TableField[] { OrderType.ORDER_TYPE.CODE }, true);
+    public static final ForeignKey<EngOrderRecord, CategoryRecord> ENG_ORDER__FK_CATEGORY_ID = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_category_id"), new TableField[] { EngOrder.ENG_ORDER.CATEGORY_ID }, Keys.CATEGORY_PKEY, new TableField[] { Category.CATEGORY.ID }, true);
+    public static final ForeignKey<EngOrderRecord, ItemRecord> ENG_ORDER__FK_ITEM_ID = Internal.createForeignKey(EngOrder.ENG_ORDER, DSL.name("fk_item_id"), new TableField[] { EngOrder.ENG_ORDER.ITEM_ID }, Keys.ITEM_PKEY, new TableField[] { Item.ITEM.ID }, true);
+    public static final ForeignKey<ItemRecord, OrderTypeRecord> ITEM__FK_TYPE_ID = Internal.createForeignKey(Item.ITEM, DSL.name("fk_type_id"), new TableField[] { Item.ITEM.TYPE_ID }, Keys.ORDER_TYPE_PKEY, new TableField[] { OrderType.ORDER_TYPE.ID }, true);
 }
