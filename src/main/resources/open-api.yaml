@@ -436,6 +436,14 @@ components:
           type: string
         phone:
           type: string
+        sec_phone:
+          type: string
+        company:
+          type: string
+        company_cat:
+          type: string
+        email:
+          type: string
         adress:
           type: string
           required:
@@ -484,4 +492,12 @@ components:
           required:
             - 'false'
         type:
+          type: string
+        sec_phone:
+          type: string
+        company:
+          type: string
+        company_cat:
+          type: string
+        email:
           type: string

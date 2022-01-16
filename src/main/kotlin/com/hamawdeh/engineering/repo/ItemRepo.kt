@@ -76,7 +76,10 @@ class ItemRepo(private val dsl: DSLContext) {
             EngOrder.ENG_ORDER.ROLE,
             EngOrder.ENG_ORDER.PHONE,
             EngOrder.ENG_ORDER.ADDRESS,
-            EngOrder.ENG_ORDER.NOTES
+            EngOrder.ENG_ORDER.NOTES,
+            EngOrder.ENG_ORDER.SEC_PHONE,
+            EngOrder.ENG_ORDER.COMPANY,
+            EngOrder.ENG_ORDER.COMPANY_CAT,
         ).values(
             order.categoryCode,
             order.itemCode,
@@ -84,7 +87,10 @@ class ItemRepo(private val dsl: DSLContext) {
             order.role,
             order.phone,
             order.adress,
-            order.notes
+            order.notes,
+            order.secPhone,
+            order.company,
+            order.companyCat
         ).execute()
     }
 
@@ -135,7 +141,10 @@ class ItemRepo(private val dsl: DSLContext) {
                         Item.ITEM.CODE
                     )
                 }",
-                type = record.get(OrderType.ORDER_TYPE.DESCRIPTION)
+                type = record.get(OrderType.ORDER_TYPE.DESCRIPTION),
+                company = it.company,
+                companyCat = it.companyCat,
+                secPhone = it.secPhone
             )
         }
     }

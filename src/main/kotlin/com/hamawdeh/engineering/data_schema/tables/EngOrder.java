@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row9;
+import org.jooq.Row13;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -93,6 +93,26 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
      * The column <code>public.eng_order.created</code>.
      */
     public final TableField<EngOrderRecord, LocalDateTime> CREATED = createField(DSL.name("created"), SQLDataType.LOCALDATETIME(6).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.LOCALDATETIME)), this, "");
+
+    /**
+     * The column <code>public.eng_order.company</code>.
+     */
+    public final TableField<EngOrderRecord, String> COMPANY = createField(DSL.name("company"), SQLDataType.VARCHAR(256), this, "");
+
+    /**
+     * The column <code>public.eng_order.company_cat</code>.
+     */
+    public final TableField<EngOrderRecord, String> COMPANY_CAT = createField(DSL.name("company_cat"), SQLDataType.VARCHAR(256), this, "");
+
+    /**
+     * The column <code>public.eng_order.email</code>.
+     */
+    public final TableField<EngOrderRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(256), this, "");
+
+    /**
+     * The column <code>public.eng_order.sec_phone</code>.
+     */
+    public final TableField<EngOrderRecord, String> SEC_PHONE = createField(DSL.name("sec_phone"), SQLDataType.VARCHAR(256), this, "");
 
     private EngOrder(Name alias, Table<EngOrderRecord> aliased) {
         this(alias, aliased, null);
@@ -191,11 +211,11 @@ public class EngOrder extends TableImpl<EngOrderRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row13 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Integer, Integer, Integer, String, String, String, String, String, LocalDateTime> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row13<Integer, Integer, Integer, String, String, String, String, String, LocalDateTime, String, String, String, String> fieldsRow() {
+        return (Row13) super.fieldsRow();
     }
 }
