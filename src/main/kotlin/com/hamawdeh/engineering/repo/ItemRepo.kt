@@ -90,45 +90,28 @@ class ItemRepo(private val dsl: DSLContext) {
 
     fun findOrderByTypeCode(type: Int?): List<OrderResponse> {
         val selectFrom = dsl.select().from(
-            EngOrder.ENG_ORDER.join(Item.ITEM).on(EngOrder.ENG_ORDER.ITEM_ID.eq(Item.ITEM.ID))
-                .join(OrderType.ORDER_TYPE).on(Item.ITEM.TYPE_ID.eq(OrderType.ORDER_TYPE.ID))
+            EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
+                .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID)).join(Category.CATEGORY)
+                .on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
         )
 
         if (type != null) {
             selectFrom.where(OrderType.ORDER_TYPE.CODE.eq(type))
         }
 
-        return mapOrders(selectFrom.fetchInto(EngOrder.ENG_ORDER))
-    }
-
-    fun mapOrders(result: Result<EngOrderRecord>): List<OrderResponse> {
-        return result.map {
-            val query = dsl.select().from(
-                EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
-                    .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID))
-                    .join(Category.CATEGORY).on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
-            ).where(EngOrder.ENG_ORDER.ID.eq(it.id))
-
-
-            log.info(query.toString())
-
-            val record = query.fetch().first()
-
+        return selectFrom.fetch().map {
             OrderResponse(
-                id = it.id,
-                name = it.name,
-                notes = it.notes,
-                phone = it.phone,
-                role = it.role,
-                serial = "${record.get(Category.CATEGORY.CODE)}-${record.get(OrderType.ORDER_TYPE.CODE)}-${
-                    record.get(
+                id = it.get(EngOrder.ENG_ORDER.ID),
+                name = it.get(EngOrder.ENG_ORDER.NAME),
+                notes = it.get(EngOrder.ENG_ORDER.NOTES),
+                phone = it.get(EngOrder.ENG_ORDER.PHONE),
+                role = it.get(EngOrder.ENG_ORDER.ROLE),
+                serial = "${it.get(Category.CATEGORY.CODE)}-${it.get(OrderType.ORDER_TYPE.CODE)}-${
+                    it.get(
                         Item.ITEM.CODE
                     )
                 }",
-                type = record.get(OrderType.ORDER_TYPE.DESCRIPTION),
-                company = it.company,
-                companyCat = it.companyCat,
-                secPhone = it.secPhone
+                type = it.get(OrderType.ORDER_TYPE.DESCRIPTION)
             )
         }
     }
@@ -235,48 +218,43 @@ class ItemRepo(private val dsl: DSLContext) {
     }
 
     fun search(keyword: String): List<OrderResponse> {
-        val ids = dsl.select(EngOrder.ENG_ORDER.ID).from(EngOrder.ENG_ORDER).where(
-            EngOrder.ENG_ORDER.NAME.like("%$keyword%").or(
-                EngOrder.ENG_ORDER.ADDRESS.like("%$keyword%")
+        return dsl.select().from(
+            EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
+                .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID)).join(Category.CATEGORY)
+                .on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
+        ).where(
+            EngOrder.ENG_ORDER.NAME.likeIgnoreCase("%$keyword%").or(
+                EngOrder.ENG_ORDER.ADDRESS.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.NOTES.like("%$keyword%")
+                EngOrder.ENG_ORDER.NOTES.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.PHONE.like("%$keyword%")
+                EngOrder.ENG_ORDER.PHONE.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.SEC_PHONE.like("%$keyword%")
+                EngOrder.ENG_ORDER.SEC_PHONE.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.ROLE.like("%$keyword%")
+                EngOrder.ENG_ORDER.ROLE.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.EMAIL.like("%$keyword%")
+                EngOrder.ENG_ORDER.EMAIL.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.COMPANY.like("%$keyword%")
+                EngOrder.ENG_ORDER.COMPANY.likeIgnoreCase("%$keyword%")
             ).or(
-                EngOrder.ENG_ORDER.COMPANY_CAT.like("%$keyword%")
-            )
-        ).fetch().map { it.get(EngOrder.ENG_ORDER.ID) }.distinct()
-
-        return ids.map {
-            val query = dsl.select().from(
-                EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
-                    .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID))
-                    .join(Category.CATEGORY).on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
-            ).where(EngOrder.ENG_ORDER.ID.eq(it))
-            val record = query.fetch().first()
-
+                EngOrder.ENG_ORDER.COMPANY_CAT.likeIgnoreCase("%$keyword%")
+            ).or(OrderType.ORDER_TYPE.DESCRIPTION.likeIgnoreCase("%$keyword%"))
+        ).fetch().map {
             OrderResponse(
-                id = it,
-                name = record.get(EngOrder.ENG_ORDER.NAME),
-                notes = record.get(EngOrder.ENG_ORDER.NOTES),
-                phone = record.get(EngOrder.ENG_ORDER.PHONE),
-                role = record.get(EngOrder.ENG_ORDER.ROLE),
-                serial = "${record.get(Category.CATEGORY.CODE)}-${record.get(OrderType.ORDER_TYPE.CODE)}-${
-                    record.get(
+                id = it.get(EngOrder.ENG_ORDER.ID),
+                name = it.get(EngOrder.ENG_ORDER.NAME),
+                notes = it.get(EngOrder.ENG_ORDER.NOTES),
+                phone = it.get(EngOrder.ENG_ORDER.PHONE),
+                role = it.get(EngOrder.ENG_ORDER.ROLE),
+                serial = "${it.get(Category.CATEGORY.CODE)}-${it.get(OrderType.ORDER_TYPE.CODE)}-${
+                    it.get(
                         Item.ITEM.CODE
                     )
                 }",
-                type = record.get(OrderType.ORDER_TYPE.DESCRIPTION)
+                type = it.get(OrderType.ORDER_TYPE.DESCRIPTION)
             )
-        }
-
+        }.distinct()
     }
+
 }
