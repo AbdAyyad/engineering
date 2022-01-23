@@ -359,6 +359,49 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrderResponse'
+
+  /order/{id}:
+    delete:
+      tags:
+        - items
+      summary: delete order
+      operationId: deleteOrder
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: delete sucessfully
+          content:
+            application/json:
+              schema:
+                type: integer
+
+  /search:
+    get:
+      tags:
+        - items
+      summary: search order
+      operationId: searchOrder
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: search sucessfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderResponse'
+
   /order/csv:
     get:
       tags:

@@ -105,4 +105,12 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
     override fun patchOrder(updateOrderRequest: UpdateOrderRequest): ResponseEntity<OrderResponse> {
         return ResponseEntity.ok(itemRepo.updateOrder(updateOrderRequest))
     }
+
+    override fun deleteOrder(id: Int): ResponseEntity<Int> {
+        return ResponseEntity.ok(itemRepo.deleteOrder(id))
+    }
+
+    override fun searchOrder(keyword: String): ResponseEntity<List<OrderResponse>> {
+        return ResponseEntity.ok(itemRepo.search(keyword))
+    }
 }
