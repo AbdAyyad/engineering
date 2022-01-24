@@ -77,6 +77,41 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
 
+    patch:
+      tags:
+        - user
+      summary: updateUser
+      description: updateUser
+      operationId: updateUser
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: "add new user to db"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        500:
+          description: "system error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        400:
+          description: "validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-codegen-request-body-name: body
+
+
   /user/{name}:
     delete:
       tags:
@@ -466,16 +501,16 @@ components:
       properties:
         id:
           type: integer
-          required:
-            - 'false'
         username:
           type: string
-          required:
-            - 'true'
         password:
           type: string
-          required:
-            - 'true'
+        permission:
+          type: string
+      required:
+        - username
+        - password
+        - permission
     Error:
       type: object
       properties:
@@ -491,6 +526,8 @@ components:
         status:
           type: boolean
         name:
+          type: string
+        permission:
           type: string
     CategoryResponse:
       type: array

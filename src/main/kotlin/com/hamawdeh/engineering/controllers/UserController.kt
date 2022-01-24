@@ -22,12 +22,15 @@ class UserController(private val userRepo: UserRepo) : UserApi {
 
     override fun loginUser(user: User): ResponseEntity<LoginResponse> {
         logger.info(user.username)
+        logger.info(user.password)
         val userFromDb = userRepo.findUserByUserName(user.username!!)
+        logger.info(userFromDb.password)
         return ResponseEntity.ok(
             LoginResponse(
                 status = userFromDb.password == user.password,
                 id = userFromDb.id,
-                name = user.username
+                name = user.username,
+                permission= userFromDb.permission
             )
         )
     }
@@ -39,5 +42,10 @@ class UserController(private val userRepo: UserRepo) : UserApi {
 
     override fun getUsers(): ResponseEntity<List<User>> {
         return ResponseEntity.ok(userRepo.findAll())
+    }
+
+    override fun updateUser(body: User): ResponseEntity<User> {
+        userRepo.updateUser(body)
+        return ResponseEntity.ok(body)
     }
 }
