@@ -5,7 +5,6 @@ import com.hamawdeh.engineering.data_schema.tables.EngOrder
 import com.hamawdeh.engineering.data_schema.tables.Item
 import com.hamawdeh.engineering.data_schema.tables.OrderType
 import com.hamawdeh.engineering.data_schema.tables.records.CategoryRecord
-import com.hamawdeh.engineering.data_schema.tables.records.EngOrderRecord
 import com.hamawdeh.engineering.data_schema.tables.records.ItemRecord
 import com.hamawdeh.engineering.data_schema.tables.records.OrderTypeRecord
 import com.hamawdeh.engineering.model.OrderObject
@@ -88,7 +87,7 @@ class ItemRepo(private val dsl: DSLContext) {
         ).execute()
     }
 
-    fun findOrderByTypeCode(type: Int?): List<OrderResponse> {
+    fun findOrderByTypeCodeAndCatCodeAndItemCode(type: Int?, cat: Int?, item: Int?): List<OrderResponse> {
         val selectFrom = dsl.select().from(
             EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
                 .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID)).join(Category.CATEGORY)
@@ -98,6 +97,18 @@ class ItemRepo(private val dsl: DSLContext) {
         if (type != null) {
             selectFrom.where(OrderType.ORDER_TYPE.CODE.eq(type))
         }
+
+        if (cat != null) {
+            selectFrom.where(Category.CATEGORY.CODE.eq(cat))
+        }
+
+        if (item != null) {
+            selectFrom.where(Item.ITEM.CODE.eq(item))
+        }
+
+        selectFrom.orderBy(OrderType.ORDER_TYPE.CREATED.desc())
+
+        log.info(selectFrom.toString())
 
         return selectFrom.fetch().map {
             OrderResponse(
@@ -111,7 +122,10 @@ class ItemRepo(private val dsl: DSLContext) {
                         Item.ITEM.CODE
                     )
                 }",
-                type = it.get(OrderType.ORDER_TYPE.DESCRIPTION)
+                type = it.get(Category.CATEGORY.NAME),
+                item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
+                category = it.get(Category.CATEGORY.NAME),
+                subItem = it.get(Item.ITEM.DESCRIPTION)
             )
         }
     }
@@ -208,7 +222,10 @@ class ItemRepo(private val dsl: DSLContext) {
                             Item.ITEM.CODE
                         )
                     }",
-                    type = record.get(OrderType.ORDER_TYPE.DESCRIPTION)
+                    type = it.get(Category.CATEGORY.NAME),
+                    item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
+                    category = it.get(Category.CATEGORY.NAME),
+                    subItem = it.get(Item.ITEM.DESCRIPTION)
                 )
             }.first()
     }
@@ -217,11 +234,11 @@ class ItemRepo(private val dsl: DSLContext) {
         return dsl.deleteFrom(EngOrder.ENG_ORDER).where(EngOrder.ENG_ORDER.ID.eq(id)).execute()
     }
 
-    fun search(keyword: String): List<OrderResponse> {
-        return dsl.select().from(
+    fun search(keyword: String,type: Int?, cat: Int?, item: Int?): List<OrderResponse> {
+        val sqlStatement = dsl.select().from(
             EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
-                .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID)).join(Category.CATEGORY)
-                .on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
+                .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID))
+                .join(Category.CATEGORY).on(Category.CATEGORY.ID.eq(EngOrder.ENG_ORDER.CATEGORY_ID))
         ).where(
             EngOrder.ENG_ORDER.NAME.likeIgnoreCase("%$keyword%").or(
                 EngOrder.ENG_ORDER.ADDRESS.likeIgnoreCase("%$keyword%")
@@ -239,8 +256,32 @@ class ItemRepo(private val dsl: DSLContext) {
                 EngOrder.ENG_ORDER.COMPANY.likeIgnoreCase("%$keyword%")
             ).or(
                 EngOrder.ENG_ORDER.COMPANY_CAT.likeIgnoreCase("%$keyword%")
-            ).or(OrderType.ORDER_TYPE.DESCRIPTION.likeIgnoreCase("%$keyword%"))
-        ).fetch().map {
+            ).or(
+                OrderType.ORDER_TYPE.DESCRIPTION.likeIgnoreCase("%$keyword%")
+            ).or(
+                Category.CATEGORY.NAME.likeIgnoreCase("%$keyword%")
+            ).or(
+                Item.ITEM.DESCRIPTION.likeIgnoreCase("%$keyword%")
+            )
+        )
+
+        if (type != null) {
+            sqlStatement.and(OrderType.ORDER_TYPE.CODE.eq(type))
+        }
+
+        if (cat != null) {
+            sqlStatement.and(Category.CATEGORY.CODE.eq(cat))
+        }
+
+        if (item != null) {
+            sqlStatement.and(Item.ITEM.CODE.eq(item))
+        }
+
+        sqlStatement.orderBy(OrderType.ORDER_TYPE.CREATED.desc())
+
+        log.info(sqlStatement.toString())
+
+        return sqlStatement.fetch().map {
             OrderResponse(
                 id = it.get(EngOrder.ENG_ORDER.ID),
                 name = it.get(EngOrder.ENG_ORDER.NAME),
@@ -252,7 +293,10 @@ class ItemRepo(private val dsl: DSLContext) {
                         Item.ITEM.CODE
                     )
                 }",
-                type = it.get(OrderType.ORDER_TYPE.DESCRIPTION)
+                type = it.get(Category.CATEGORY.NAME),
+                item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
+                category = it.get(Category.CATEGORY.NAME),
+                subItem = it.get(Item.ITEM.DESCRIPTION)
             )
         }.distinct()
     }

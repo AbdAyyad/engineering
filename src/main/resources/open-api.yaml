@@ -345,11 +345,22 @@ paths:
       summary: get orders
       operationId: getOrders
       parameters:
-        - in: query
-          name: type
+        - name: cat
+          in: query
           required: false
           schema:
             type: integer
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: item
+          in: query
+          required: false
+          schema:
+            type: integer
+
       responses:
         200:
           description: get list of order objects
@@ -392,6 +403,22 @@ paths:
           required: true
           schema:
             type: string
+        - name: cat
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: item
+          in: query
+          required: false
+          schema:
+            type: integer
+
       responses:
         200:
           description: search sucessfully
@@ -409,11 +436,22 @@ paths:
       summary: get orders csv
       operationId: getOrdersCsv
       parameters:
-        - in: query
-          name: type
+        - name: cat
+          in: query
           required: false
           schema:
             type: integer
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: item
+          in: query
+          required: false
+          schema:
+            type: integer
+
       responses:
         200:
           description: get list of order objects
@@ -543,4 +581,10 @@ components:
         company_cat:
           type: string
         email:
+          type: string
+        item:
+          type: string
+        subItem:
+          type: string
+        category:
           type: string

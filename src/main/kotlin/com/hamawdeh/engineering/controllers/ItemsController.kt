@@ -12,8 +12,10 @@ import com.hamawdeh.engineering.repo.ItemRepo
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.io.StringWriter
+import javax.validation.constraints.NotNull
 
 @RestController
 class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
@@ -31,12 +33,20 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
         return ResponseEntity.ok(itemRepo.findItemByOrderType(typeCode))
     }
 
-    override fun getOrders(type: Int?): ResponseEntity<List<OrderResponse>> {
-        return ResponseEntity.ok(itemRepo.findOrderByTypeCode(type))
+    override fun getOrders(
+        @RequestParam(required = false, value = "cat") cat: Int?,
+        @RequestParam(required = false, value = "type") type: Int?,
+        @RequestParam(required = false, value = "item") item: Int?
+    ): ResponseEntity<List<OrderResponse>> {
+        return ResponseEntity.ok(itemRepo.findOrderByTypeCodeAndCatCodeAndItemCode(type, cat, item))
     }
 
-    override fun getOrdersCsv(type: Int?): ResponseEntity<String> {
-        val orders = itemRepo.findOrderByTypeCode(type)
+    override fun getOrdersCsv(
+        @RequestParam(required = false, value = "cat") cat: Int?,
+        @RequestParam(required = false, value = "type") type: Int?,
+        @RequestParam(required = false, value = "item") item: Int?
+    ): ResponseEntity<String> {
+        val orders = itemRepo.findOrderByTypeCodeAndCatCodeAndItemCode(type, cat, item)
 
         val csvSchemaBuilder = CsvSchema.builder()
         csvSchemaBuilder
@@ -44,8 +54,14 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
             .addColumn("name")
             .addColumn("type")
             .addColumn("role")
-            .addColumn("phone")
             .addColumn("email")
+            .addColumn("phone")
+            .addColumn("secPhone")
+            .addColumn("company")
+            .addColumn("companyCat")
+            .addColumn("item")
+            .addColumn("subItem")
+            .addColumn("category")
             .addColumn("notes")
 
         val stringWriter = StringWriter()
@@ -110,7 +126,12 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
         return ResponseEntity.ok(itemRepo.deleteOrder(id))
     }
 
-    override fun searchOrder(keyword: String): ResponseEntity<List<OrderResponse>> {
-        return ResponseEntity.ok(itemRepo.search(keyword))
+    override fun searchOrder(
+        @NotNull @RequestParam(required = true, value = "keyword") keyword: String,
+        @RequestParam(required = false, value = "cat") cat: Int?,
+        @RequestParam(required = false, value = "type") type: Int?,
+        @RequestParam(required = false, value = "item") item: Int?
+    ): ResponseEntity<List<OrderResponse>> {
+        return ResponseEntity.ok(itemRepo.search(keyword, type, cat, item))
     }
 }
