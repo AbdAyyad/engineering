@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.io.StringWriter
+import java.nio.charset.StandardCharsets
 import javax.validation.constraints.NotNull
 
 @RestController
@@ -84,7 +85,12 @@ class ItemsController(private val itemRepo: ItemRepo) : ItemsApi {
         val headers = HttpHeaders()
         headers.set("Content-type", "text/csv")
         headers.set("Content-disposition", "attachment;filename=excel.csv")
-        return ResponseEntity(stringWriter.toString(), headers, HttpStatus.OK)
+        return ResponseEntity(
+            String(
+                stringWriter.toString().toByteArray(StandardCharsets.UTF_8),
+                StandardCharsets.UTF_8
+            ), headers, HttpStatus.OK
+        )
     }
 
     override fun getTypes(): ResponseEntity<List<SerialObject>> {

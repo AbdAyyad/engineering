@@ -73,6 +73,7 @@ class ItemRepo(private val dsl: DSLContext) {
             EngOrder.ENG_ORDER.SEC_PHONE,
             EngOrder.ENG_ORDER.COMPANY,
             EngOrder.ENG_ORDER.COMPANY_CAT,
+            EngOrder.ENG_ORDER.EMAIL
         ).values(
             order.categoryCode,
             order.itemCode,
@@ -83,7 +84,8 @@ class ItemRepo(private val dsl: DSLContext) {
             order.notes,
             order.secPhone,
             order.company,
-            order.companyCat
+            order.companyCat,
+            order.email
         ).execute()
     }
 
@@ -125,7 +127,8 @@ class ItemRepo(private val dsl: DSLContext) {
                 type = it.get(Category.CATEGORY.NAME),
                 item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
                 category = it.get(Category.CATEGORY.NAME),
-                subItem = it.get(Item.ITEM.DESCRIPTION)
+                subItem = it.get(Item.ITEM.DESCRIPTION),
+                email = it.get(EngOrder.ENG_ORDER.EMAIL)
             )
         }
     }
@@ -234,7 +237,7 @@ class ItemRepo(private val dsl: DSLContext) {
         return dsl.deleteFrom(EngOrder.ENG_ORDER).where(EngOrder.ENG_ORDER.ID.eq(id)).execute()
     }
 
-    fun search(keyword: String,type: Int?, cat: Int?, item: Int?): List<OrderResponse> {
+    fun search(keyword: String, type: Int?, cat: Int?, item: Int?): List<OrderResponse> {
         val sqlStatement = dsl.select().from(
             EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
                 .join(OrderType.ORDER_TYPE).on(OrderType.ORDER_TYPE.ID.eq(Item.ITEM.TYPE_ID))
@@ -296,7 +299,8 @@ class ItemRepo(private val dsl: DSLContext) {
                 type = it.get(Category.CATEGORY.NAME),
                 item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
                 category = it.get(Category.CATEGORY.NAME),
-                subItem = it.get(Item.ITEM.DESCRIPTION)
+                subItem = it.get(Item.ITEM.DESCRIPTION),
+                email = it.get(EngOrder.ENG_ORDER.EMAIL)
             )
         }.distinct()
     }
