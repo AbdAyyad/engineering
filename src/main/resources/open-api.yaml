@@ -586,11 +586,14 @@ components:
           type: string
         notes:
           type: string
+        email:
+          type: string
       required:
         - id
         - name
         - role
         - phone
+        - email
 
     OrderResponse:
       type: object

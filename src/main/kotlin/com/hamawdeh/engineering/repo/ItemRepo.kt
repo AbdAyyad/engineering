@@ -202,6 +202,7 @@ class ItemRepo(private val dsl: DSLContext) {
             .set(EngOrder.ENG_ORDER.PHONE, updateOrderRequest.phone)
             .set(EngOrder.ENG_ORDER.NOTES, updateOrderRequest.notes)
             .set(EngOrder.ENG_ORDER.ADDRESS, updateOrderRequest.adress)
+            .set(EngOrder.ENG_ORDER.EMAIL, updateOrderRequest.email)
             .where(EngOrder.ENG_ORDER.ID.eq(updateOrderRequest.id)).returning().map {
                 val query = dsl.select().from(
                     EngOrder.ENG_ORDER.join(Item.ITEM).on(Item.ITEM.ID.eq(EngOrder.ENG_ORDER.ITEM_ID))
@@ -225,10 +226,10 @@ class ItemRepo(private val dsl: DSLContext) {
                             Item.ITEM.CODE
                         )
                     }",
-                    type = it.get(Category.CATEGORY.NAME),
-                    item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
-                    category = it.get(Category.CATEGORY.NAME),
-                    subItem = it.get(Item.ITEM.DESCRIPTION)
+                    type = record.get(Category.CATEGORY.NAME),
+                    item = record.get(OrderType.ORDER_TYPE.DESCRIPTION),
+                    category = record.get(Category.CATEGORY.NAME),
+                    subItem = record.get(Item.ITEM.DESCRIPTION)
                 )
             }.first()
     }
