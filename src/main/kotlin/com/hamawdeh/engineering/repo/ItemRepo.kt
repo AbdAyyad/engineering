@@ -56,12 +56,26 @@ class ItemRepo(private val dsl: DSLContext) {
     private fun mapItem(result: Result<ItemRecord>): List<SerialObject> {
         return result.map {
             SerialObject(
-                code = it.code, description = it.description
+                code = it.code,
+                description = it.description
             )
         }
     }
 
     fun addOrder(order: OrderObject) {
+
+        val catId = dsl.select(Category.CATEGORY.ID)
+            .from(Category.CATEGORY)
+            .where(Category.CATEGORY.CODE.eq(order.categoryCode))
+            .fetchOne()
+            ?.map { it.get(Category.CATEGORY.ID) }
+
+        val itemId = dsl.select(Item.ITEM.ID)
+            .from(Item.ITEM)
+            .where(Item.ITEM.CODE.eq(order.itemCode))
+            .fetchOne()
+            ?.map { it.get(Category.CATEGORY.ID) }
+
         dsl.insertInto(EngOrder.ENG_ORDER).columns(
             EngOrder.ENG_ORDER.CATEGORY_ID,
             EngOrder.ENG_ORDER.ITEM_ID,
@@ -75,8 +89,8 @@ class ItemRepo(private val dsl: DSLContext) {
             EngOrder.ENG_ORDER.COMPANY_CAT,
             EngOrder.ENG_ORDER.EMAIL
         ).values(
-            order.categoryCode,
-            order.itemCode,
+            catId!!,
+            itemId!!,
             order.name,
             order.role,
             order.phone,
