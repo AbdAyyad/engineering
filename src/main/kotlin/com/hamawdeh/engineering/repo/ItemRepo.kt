@@ -70,6 +70,8 @@ class ItemRepo(private val dsl: DSLContext) {
             .fetchOne()
             ?.map { it.get(Category.CATEGORY.ID) }
 
+        log.info("cat code ${order.categoryCode} id $catId")
+
         val itemId = dsl.select(Item.ITEM.ID)
             .from(Item.ITEM)
             .where(Item.ITEM.CODE.eq(order.itemCode))

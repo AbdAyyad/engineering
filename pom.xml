@@ -112,6 +112,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.hamawdeh.engineering.EngineeringApplicationKt</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -133,7 +139,8 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>${project.build.directory}/generated-sources/kotlin/src/main/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                <sourceDir>${project.build.directory}/generated-sources/src/main/kotlin</sourceDir>
                             </sourceDirs>
                         </configuration>
                     </execution>
@@ -157,7 +164,7 @@
                 <version>3.15.4</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
+                        <phase>none</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -171,6 +178,7 @@
                         <password>password</password>
                     </jdbc>
                     <generator>
+                        <name>org.jooq.codegen.KotlinGenerator</name>
                         <database>
                             <includes>.*</includes>
                             <excludes>flyway_schema_history</excludes>
@@ -197,12 +205,15 @@
                                 ${project.basedir}/src/main/resources/open-api.yaml
                             </inputSpec>
                             <generatorName>kotlin-spring</generatorName>
-                            <apiPackage>com.hamawdeh.engineering.controller</apiPackage>
-                            <modelPackage>com.hamawdeh.engineering.model</modelPackage>
+                            <output>${project.build.directory}/generated-sources/</output>
+                            <generateSupportingFiles>true</generateSupportingFiles>
                             <supportingFilesToGenerate>
                                 ApiUtil.java
                             </supportingFilesToGenerate>
                             <configOptions>
+                                <apiPackage>com.hamawdeh.engineering.controller</apiPackage>
+                                <modelPackage>com.hamawdeh.engineering.model</modelPackage>
+                                <library>spring-boot</library>
                                 <delegatePattern>false</delegatePattern>
                                 <useTags>true</useTags>
                                 <interfaceOnly>true</interfaceOnly>
