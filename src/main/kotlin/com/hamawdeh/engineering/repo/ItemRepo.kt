@@ -144,7 +144,8 @@ class ItemRepo(private val dsl: DSLContext) {
                 item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
                 category = it.get(Category.CATEGORY.NAME),
                 subItem = it.get(Item.ITEM.DESCRIPTION),
-                email = it.get(EngOrder.ENG_ORDER.EMAIL)
+                email = it.get(EngOrder.ENG_ORDER.EMAIL),
+                address = it.get(EngOrder.ENG_ORDER.ADDRESS)
             )
         }
     }
@@ -317,7 +318,8 @@ class ItemRepo(private val dsl: DSLContext) {
                 item = it.get(OrderType.ORDER_TYPE.DESCRIPTION),
                 category = it.get(Category.CATEGORY.NAME),
                 subItem = it.get(Item.ITEM.DESCRIPTION),
-                email = it.get(EngOrder.ENG_ORDER.EMAIL)
+                email = it.get(EngOrder.ENG_ORDER.EMAIL),
+                address = it.get(EngOrder.ENG_ORDER.ADDRESS)
             )
         }.distinct()
     }

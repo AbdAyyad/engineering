@@ -628,3 +628,5 @@ components:
           type: string
         category:
           type: string
+        address:
+          type: string

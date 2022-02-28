@@ -23,7 +23,7 @@ class UserController(private val userRepo: UserRepo) : UserApi {
     override fun loginUser(user: User): ResponseEntity<LoginResponse> {
         logger.info(user.username)
         logger.info(user.password)
-        val userFromDb = userRepo.findUserByUserName(user.username!!)
+        val userFromDb = userRepo.findUserByUserName(user.username)
         logger.info(userFromDb.password)
         return ResponseEntity.ok(
             LoginResponse(
